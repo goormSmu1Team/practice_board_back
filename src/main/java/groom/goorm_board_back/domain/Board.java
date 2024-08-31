@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 @Entity
-public class Post {
+public class Board {
 
     @Id // 기본키
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +28,15 @@ public class Post {
 //    @Column(name = "view_count")
 //    private int viewCount = 0;
 
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+//    @Column(name = "created_date", nullable = false)
+//    private LocalDateTime createdDate;
 
     @Builder // 안정성 보장을 위해 빌더 패턴
-    public Post(String title, String content) {
+    public Board(String title, String content) {
         //이 빌더는 게시글 사용할때만 사용할 용도
         this.title = title;
         this.content = content;
-        this.createdDate = LocalDateTime.now();
+//        this.createdDate = LocalDateTime.now();
     }
 
 

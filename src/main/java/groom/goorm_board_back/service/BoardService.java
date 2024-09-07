@@ -1,8 +1,8 @@
 package groom.goorm_board_back.service;
 
 import groom.goorm_board_back.domain.Board;
-import groom.goorm_board_back.dto.BoardSaveRequestDto;
-import groom.goorm_board_back.dto.BoardUpdateRequestDto;
+import groom.goorm_board_back.dto.board.BoardSaveRequestDto;
+import groom.goorm_board_back.dto.board.BoardUpdateRequestDto;
 import groom.goorm_board_back.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,31 +16,31 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    //게시글 추가
-    public Board save(BoardSaveRequestDto saveDto) {
-        return boardRepository.save(saveDto.toEntity());
-    }
+    @Transactional
+    public Board save(BoardSaveRequestDto boardSaveRequestDto) {
+        return boardRepository.save(boardSaveRequestDto.toEntity());
+    }//게시글 추가
 
-    //게시글 조회
+    @Transactional
     public List<Board> findAll(){
         return boardRepository.findAll();
-    }
+    }//게시글 조회
 
-    //게시글 삭제
-    public void delete(long id){
-        boardRepository.deleteById(id);
-    }
-
-    //게시글 수정
-    @Transactional
-    public Board update(long id , BoardUpdateRequestDto updateDto){
+    public void delete(long id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했다람쥐"));
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했습니다"));
 
-        board.updateTitle(updateDto.getTitle());
-        board.updateContent(updateDto.getContent());
+        boardRepository.delete(board);
+    }//게시글 삭제
+
+    @Transactional
+    public Board updateBoard(long id , BoardUpdateRequestDto boardUpdateRequestDto){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했습니다"));
+
+        board.updateTitle(boardUpdateRequestDto.getTitle());
+        board.updateContent(boardUpdateRequestDto.getContent());
         return board;
-    }
-
+    }//게시글 수정
 
 }

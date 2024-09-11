@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     public String get() {
-        return "hello world";
+        return "hello world2";
     }
 }

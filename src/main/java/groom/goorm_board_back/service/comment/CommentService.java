@@ -9,6 +9,7 @@ import groom.goorm_board_back.repository.comment.CommentRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,18 +21,20 @@ public class CommentService {
 
     public void save(Long boardId, CommentSaveDto commentSaveDto) {
 
-        Comment comment = new Comment(commentSaveDto.content());
-        memberRepository.findByMemberWithId();
-        boardRepository.findByBoardWithId(boardId);
+        Comment comment = Comment.builder()
+                .content(commentSaveDto.content())
+                .writer(memberRepository.findByMemberWithId())
+                .board(boardRepository.findByBoardWithId(boardId))
+                .build();
         commentRepository.save(comment);
     }
 
+    @Transactional
     public void update(Long id, CommentUpdateDto commentUpdateDto) {
 
         Comment comment = commentRepository.findByCommentWithId(id);
         checkAuthority(comment);
-        commentUpdateDto.content().ifPresent(comment::updateContent);
-        commentRepository.save(comment);
+        comment.updateContent(commentUpdateDto.content());
     }
 
     public void delete(Long id) {
@@ -42,8 +45,8 @@ public class CommentService {
     }
 
     public void checkAuthority(Comment comment) {
-        if(!comment.getMember().getId().equals(SecurityUtil.getCurrentUsername())) {
-            throw new IllegalArgumentException("삭제 할 권한이 없습니다.");
+        if(!comment.getWriter().equals(memberRepository.findByMemberWithId())) {
+            throw new IllegalArgumentException("수정/삭제 할 권한이 없습니다.");
         }
     }
 

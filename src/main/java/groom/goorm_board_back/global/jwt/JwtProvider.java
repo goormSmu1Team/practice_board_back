@@ -35,30 +35,42 @@ public class JwtProvider {
 
     public JwtDto generateToken(Authentication authentication) {
 
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
-        long now = (new Date()).getTime();
-
-        Date accessTokenExpires = new Date(now + 86400000);
-
-        String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("auth", authorities)
-                .setExpiration(accessTokenExpires)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String accessToken = createAccessToken(authentication);
+        String refreshToken = createRefreshToken(authentication);
 
         return JwtDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    private String createAccessToken(Authentication authentication) {
+
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        Date accessTokenExpires = new Date(now + 864000000);
+
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim("auth", authorities)
+                .setExpiration(accessTokenExpires)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String createRefreshToken(Authentication authentication) {
+
+        long now = (new Date()).getTime();
+        Date refreshExpires = new Date(now + 864000000);
+
+        return Jwts.builder()
+                .setExpiration(refreshExpires)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
     }
 
     public Authentication getAuthentication(String token) {

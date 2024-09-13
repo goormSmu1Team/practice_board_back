@@ -18,7 +18,7 @@ public class Comment extends BaseTimeEntity{
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member writer;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -27,8 +27,9 @@ public class Comment extends BaseTimeEntity{
     private String content;
 
     @Builder
-    public Comment(String content) {
-
+    public Comment(Member writer, Board board, String content) {
+        this.writer = writer;
+        this.board = board;
         this.content = content;
     }
 

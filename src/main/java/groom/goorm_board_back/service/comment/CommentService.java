@@ -1,15 +1,20 @@
 package groom.goorm_board_back.service.comment;
 
 import groom.goorm_board_back.domain.Comment;
+import groom.goorm_board_back.dto.comment.CommentInfoDto;
 import groom.goorm_board_back.dto.comment.CommentSaveDto;
 import groom.goorm_board_back.dto.comment.CommentUpdateDto;
 import groom.goorm_board_back.global.util.SecurityUtil;
 import groom.goorm_board_back.repository.board.BoardRepository;
+import groom.goorm_board_back.repository.comment.CommentJpaRepository;
 import groom.goorm_board_back.repository.comment.CommentRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final CommentJpaRepository commentJpaRepository;
 
     public void save(Long boardId, CommentSaveDto commentSaveDto) {
 
@@ -48,6 +54,12 @@ public class CommentService {
         if(!comment.getWriter().equals(memberRepository.findByMemberWithId())) {
             throw new IllegalArgumentException("수정/삭제 할 권한이 없습니다.");
         }
+    }
+
+    public List<CommentInfoDto> getComments(Long boardId) {
+        return commentJpaRepository.findByBoardId(boardId).stream()
+                .map(CommentInfoDto::new)
+                .collect(Collectors.toList());
     }
 
 //    public CommentInfoDto getCommentInfo(Long id) {

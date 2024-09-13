@@ -11,4 +11,14 @@ public record CommentInfoDto(
         String username,
         String content,
         LocalDateTime createdAt
-) { }
+) {
+    public CommentInfoDto(Comment comment) {
+        this(
+                comment.getBoard().getId(),
+                comment.getId(),
+                comment.getWriter().getUsername(),
+                comment.getContent(),
+                comment.getCreatedAt()
+        );
+    }
+}

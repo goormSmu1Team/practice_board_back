@@ -32,8 +32,8 @@ public class CommentController {
         return new ResponseTemplate<>(HttpStatus.OK, "댓글 삭제 성공", commentId);
     }
 
-//    @GetMapping("/comment/{commentId}")
-//    public ResponseTemplate<?> getComment(@PathVariable("commentId") Long commentId) {
-//        return new ResponseTemplate<>(HttpStatus.OK, "댓글 조회 성공", commentService.getCommentInfo(commentId));
-//    }
+    @GetMapping("/comment/{boardId}")
+    public ResponseTemplate<?> getComment(@PathVariable("boardId") Long boardId) {
+        return new ResponseTemplate<>(HttpStatus.OK, "댓글 조회 성공", commentService.getComments(boardId));
+    }
 }

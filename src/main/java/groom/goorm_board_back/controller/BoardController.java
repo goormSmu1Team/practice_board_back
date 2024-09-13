@@ -5,6 +5,7 @@ import groom.goorm_board_back.dto.board.BoardSaveDto;
 import groom.goorm_board_back.dto.board.BoardUpdateDto;
 import groom.goorm_board_back.global.template.ResponseTemplate;
 import groom.goorm_board_back.service.board.BoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,14 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/board/save")
-    public ResponseTemplate<?> save(@RequestBody BoardSaveDto boardSaveDto) {
+    @PostMapping("/board")
+    public ResponseTemplate<?> save(@RequestBody @Valid BoardSaveDto boardSaveDto) {
         boardService.save(boardSaveDto);
         return new ResponseTemplate<>(HttpStatus.OK, "게시글 저장 성공", boardSaveDto);
     }
 
-    @PostMapping("/board/{boardId}")
-    public ResponseTemplate<?> update(@PathVariable("boardId") Long boardId, @RequestBody BoardUpdateDto boardUpdateDto) {
+    @PutMapping("/board/{boardId}")
+    public ResponseTemplate<?> update(@PathVariable("boardId") Long boardId, @RequestBody @Valid BoardUpdateDto boardUpdateDto) {
         boardService.update(boardId, boardUpdateDto);
         return new ResponseTemplate<>(HttpStatus.OK, "게시글 수정 성공", boardUpdateDto);
     }
@@ -42,9 +43,9 @@ public class BoardController {
         return new ResponseTemplate<>(HttpStatus.OK, "게시글 조회 성공", boardService.getBoardInfo(boardId));
     }
 
-    @GetMapping("/board/all")
-    public ResponseTemplate<List<BoardInfoDto>> getAllInfo() {
-        return new ResponseTemplate<List<BoardInfoDto>>(HttpStatus.OK, "게시글 전체 조회 성공", boardService.getAllBoardInfos());
-    }
+//    @GetMapping("/board/all")
+//    public ResponseTemplate<List<BoardInfoDto>> getAllInfo() {
+//        return new ResponseTemplate<List<BoardInfoDto>>(HttpStatus.OK, "게시글 전체 조회 성공", boardService.getAllBoardInfos());
+//    }
 
 }

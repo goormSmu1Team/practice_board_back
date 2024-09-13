@@ -11,31 +11,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@Getter
-@NoArgsConstructor
-public class BoardInfoDto {
-
-    private Long boardId;
-    private String username;
-    private String title;
-    private String content;
-    private int views;
-    private List<CommentInfoDto> comments = new ArrayList<>();
-    private LocalDateTime createdAt;
-
-    @Builder
-    public BoardInfoDto(Board board) {
-
-        this.boardId = board.getId();
-        this.username = board.getMember().getUsername();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.views = board.getViews();
-        this.createdAt = board.getCreatedAt();
-        this.comments = board.getCommentList().stream()
-                .map(CommentInfoDto::new)
-                .toList();
-
-    }
+@Builder
+public record BoardInfoDto(
+        Long boardId,
+        String username,
+        String title,
+        String content,
+        int views,
+        List<CommentInfoDto> comments,
+        LocalDateTime createdAt
+) {
 }

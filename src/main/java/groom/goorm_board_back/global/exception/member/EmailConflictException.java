@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class EmailConflictException extends Exception{
+public class EmailConflictException extends MemberConflictException{
 
-    private final ErrorCode errorCode;
+    public EmailConflictException(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

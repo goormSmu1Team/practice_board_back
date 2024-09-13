@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class UsernameConflictException extends Exception{
+public class UsernameConflictException extends MemberConflictException{
 
-    private final ErrorCode errorCode;
+    public UsernameConflictException(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

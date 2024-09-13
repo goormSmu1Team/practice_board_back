@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "board")
 public class Board extends BaseTimeEntity{
 
@@ -21,9 +20,9 @@ public class Board extends BaseTimeEntity{
     @Column(name = "board_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member writer;
 
     @Column(nullable = false)
     private String title;
@@ -35,14 +34,10 @@ public class Board extends BaseTimeEntity{
     private int views;
 
     @Builder
-    public Board(String title, String content) {
+    public Board(Member writer, String title, String content) {
+        this.writer = writer;
         this.title = title;
         this.content = content;
-    }
-
-    public void confirmWriter(Member member) {
-        this.member = member;
-        member.addBoard(this);
     }
 
     public void updateTitle(String title) {
@@ -51,15 +46,5 @@ public class Board extends BaseTimeEntity{
 
     public void updateContent(String content) {
         this.content = content;
-    }
-
-    @OneToMany(mappedBy = "board")
-    private List<Comment> commentList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "board")
-//    private List<BoardLike> boardLikeList = new ArrayList<>();
-
-    public void addComment(Comment comment) {
-        commentList.add(comment);
     }
 }

@@ -1,10 +1,7 @@
 package groom.goorm_board_back.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -18,6 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Table(name = "member")
 @Getter
+@EqualsAndHashCode
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -32,7 +30,7 @@ public class Member extends BaseTimeEntity {
     private String password;
 
     @Column(nullable = false)
-    private  String username;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -43,23 +41,5 @@ public class Member extends BaseTimeEntity {
         this.password = password;
         this.username = username;
         this.role = role;
-    }
-
-    //@Builder.Default
-    @OneToMany(mappedBy = "member")
-    private List<Board> boardList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<Comment> commentList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "member")
-//    private List<BoardLike> boardLikeList = new ArrayList<>();
-
-    public void addBoard(Board board){
-        boardList.add(board);
-    }
-
-    public void addComment(Comment comment){
-        commentList.add(comment);
     }
 }

@@ -5,21 +5,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
-public class CommentInfoDto {
-
-    private Long boardId;
-    private Long commentId;
-    private String username;
-    private String content;
-    private LocalDateTime createdAt;
-
-    public CommentInfoDto(Comment comment) {
-
-        this.boardId = comment.getBoard().getId();
-        this.commentId = comment.getId();
-        this.username = comment.getMember().getUsername();
-        this.content = comment.getContent();
-        this.createdAt = comment.getCreatedAt();
-    }
-}
+public record CommentInfoDto(
+        Long boardId,
+        Long commentId,
+        String username,
+        String content,
+        LocalDateTime createdAt
+) { }

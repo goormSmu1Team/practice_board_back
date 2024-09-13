@@ -1,8 +1,9 @@
 package groom.goorm_board_back.service.member;
 
 import groom.goorm_board_back.domain.Member;
-import groom.goorm_board_back.repository.MemberRepository;
+import groom.goorm_board_back.repository.member.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,13 +20,13 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return memberRepository.findByEmail(username)
+        return memberJpaRepository.findByEmail(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
     }
@@ -39,6 +40,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 Collections.singleton(authority)
         );
 
+    }
+
+    public UsernamePasswordAuthenticationToken toAuthentication(String email, String password) {
+        return new UsernamePasswordAuthenticationToken(email, password);
     }
 
 }

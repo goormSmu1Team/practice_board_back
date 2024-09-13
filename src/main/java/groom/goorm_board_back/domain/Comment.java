@@ -27,24 +27,12 @@ public class Comment extends BaseTimeEntity{
     private String content;
 
     @Builder
-    public Comment(/*Member member, Board board*/String content) {
+    public Comment(String content) {
 
-//        this.member = member;
-//        this.board = board;
         this.content = content;
     }
 
     public void updateContent(String content) {
         this.content = content;
-    }
-
-    public void confirmWriter(Member member) {
-        this.member = member;
-        member.addComment(this);
-    }
-
-    public void confirmBoard(Board board) {
-        this.board = board;
-        board.addComment(this);
     }
 }

@@ -8,11 +8,9 @@ import groom.goorm_board_back.repository.board.BoardJpaRepository;
 import groom.goorm_board_back.repository.board.BoardRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +21,7 @@ public class BoardService {
     private final BoardJpaRepository boardJpaRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+
 
     public void save(BoardSaveDto boardSaveDto) {
 

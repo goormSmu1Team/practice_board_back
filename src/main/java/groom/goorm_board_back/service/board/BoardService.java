@@ -57,11 +57,11 @@ public class BoardService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public BoardInfoDto getBoardInfo(Long id) {
 
         Board board = boardRepository.findByBoardWithId(id);
-
+        board.incrementViews();
         return BoardInfoDto.from(board);
     }
 

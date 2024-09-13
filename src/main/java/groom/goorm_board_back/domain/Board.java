@@ -47,4 +47,8 @@ public class Board extends BaseTimeEntity{
     public void updateContent(String content) {
         this.content = content;
     }
+
+    public void incrementViews() {
+        this.views++;
+    }
 }

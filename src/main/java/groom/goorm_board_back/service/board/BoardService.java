@@ -4,16 +4,23 @@ import groom.goorm_board_back.domain.Board;
 import groom.goorm_board_back.dto.board.BoardInfoDto;
 import groom.goorm_board_back.dto.board.BoardSaveDto;
 import groom.goorm_board_back.dto.board.BoardUpdateDto;
+import groom.goorm_board_back.repository.board.BoardJpaRepository;
 import groom.goorm_board_back.repository.board.BoardRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.print.Pageable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
 
+    private final BoardJpaRepository boardJpaRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
@@ -55,11 +62,13 @@ public class BoardService {
 
         Board board = boardRepository.findByBoardWithId(id);
 
-        return BoardInfoDto.builder()
-                .boardId(board.getId())
-                .username(board.getWriter().getUsername())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .build();
+        return BoardInfoDto.from(board);
+    }
+
+    public List<BoardInfoDto> getAllBoards() {
+
+        return boardJpaRepository.findAll().stream()
+                .map(BoardInfoDto::from)
+                .collect(Collectors.toList());
     }
 }

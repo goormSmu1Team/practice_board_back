@@ -13,14 +13,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Builder
 public record BoardInfoDto(
         Long boardId,
         String username,
         String title,
         String content,
         int views,
-        List<CommentInfoDto> comments,
         LocalDateTime createdAt
 ) {
+    public static BoardInfoDto from(Board board) {
+        return new BoardInfoDto(
+                board.getId(),
+                board.getWriter().getUsername(),
+                board.getTitle(),
+                board.getContent(),
+                board.getViews(),
+                board.getCreatedAt()
+        );
+    }
 }

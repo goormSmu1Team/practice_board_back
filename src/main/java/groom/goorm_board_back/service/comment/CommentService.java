@@ -44,7 +44,7 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public void checkAuthority(Comment comment) {
+    private void checkAuthority(Comment comment) {
         if(!comment.getWriter().equals(memberRepository.findByMemberWithId())) {
             throw new IllegalArgumentException("수정/삭제 할 권한이 없습니다.");
         }

@@ -43,9 +43,9 @@ public class BoardController {
         return new ResponseTemplate<>(HttpStatus.OK, "게시글 조회 성공", boardService.getBoardInfo(boardId));
     }
 
-//    @GetMapping("/board/all")
-//    public ResponseTemplate<List<BoardInfoDto>> getAllInfo() {
-//        return new ResponseTemplate<List<BoardInfoDto>>(HttpStatus.OK, "게시글 전체 조회 성공", boardService.getAllBoardInfos());
-//    }
+    @GetMapping("/board")
+    public ResponseTemplate<List<BoardInfoDto>> getAllInfo() {
+        return new ResponseTemplate<List<BoardInfoDto>>(HttpStatus.OK, "게시글 전체 조회 성공", boardService.getAllBoards());
+    }
 
 }

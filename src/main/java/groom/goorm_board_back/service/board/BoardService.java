@@ -8,6 +8,9 @@ import groom.goorm_board_back.repository.board.BoardJpaRepository;
 import groom.goorm_board_back.repository.board.BoardRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,10 +67,14 @@ public class BoardService {
         return BoardInfoDto.from(board);
     }
 
-    public List<BoardInfoDto> getAllBoards() {
+    public Page<BoardInfoDto> getAllBoards(Pageable pageable) {
 
-        return boardJpaRepository.findAll().stream()
+        Page<Board> boards = boardJpaRepository.findAll(pageable);
+
+        List<BoardInfoDto> boardInfoDtoList = boards.stream()
                 .map(BoardInfoDto::from)
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(boardInfoDtoList, pageable, boards.getTotalElements());
     }
 }

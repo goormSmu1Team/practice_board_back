@@ -8,6 +8,8 @@ import groom.goorm_board_back.service.board.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +46,9 @@ public class BoardController {
     }
 
     @GetMapping("/board")
-    public ResponseTemplate<List<BoardInfoDto>> getAllInfo() {
-        return new ResponseTemplate<List<BoardInfoDto>>(HttpStatus.OK, "게시글 전체 조회 성공", boardService.getAllBoards());
+    public ResponseTemplate<Page<BoardInfoDto>> getAllInfo(Pageable pageable) {
+        boardService.getAllBoards(pageable);
+        return new ResponseTemplate<>(HttpStatus.OK, "게시글 전체 조회 성공");
     }
 
 //    @PostMapping("/board/{boardId}/like")

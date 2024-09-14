@@ -4,43 +4,64 @@ import groom.goorm_board_back.domain.Board;
 import groom.goorm_board_back.dto.board.BoardSaveRequestDto;
 import groom.goorm_board_back.dto.board.BoardUpdateRequestDto;
 import groom.goorm_board_back.repository.BoardRepository;
+import groom.goorm_board_back.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Board save(BoardSaveRequestDto boardSaveRequestDto) {
-        return boardRepository.save(boardSaveRequestDto.toEntity());
-    }//게시글 추가
+        Board board = Board.createBoard(
+                boardSaveRequestDto.title(),
+                boardSaveRequestDto.content()
+        );
+
+        return boardRepository.save(board);
+    }
+
+    @Transactional()
+    public Board findBoardId(Long id) {
+        Board board = getBoardById(id);
+
+        board.updateViewCount();
+        boardRepository.save(board);
+
+        return board;
+    }
 
     @Transactional
-    public List<Board> findAll(){
-        return boardRepository.findAll();
-    }//게시글 조회
+    public void delete(Long id) {
+        Board board = getBoardById(id);
 
-    public void delete(long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했습니다"));
+        commentRepository.deleteAllByBoardId(id);
 
         boardRepository.delete(board);
-    }//게시글 삭제
+    }
 
-    @Transactional
-    public Board updateBoard(long id , BoardUpdateRequestDto boardUpdateRequestDto){
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했습니다"));
+    public Board updateBoard(Long id , BoardUpdateRequestDto boardUpdateRequestDto){
+        Board board = getBoardById(id);
 
-        board.updateTitle(boardUpdateRequestDto.getTitle());
-        board.updateContent(boardUpdateRequestDto.getContent());
+        board.updateTitle(boardUpdateRequestDto.title());
+        board.updateContent(boardUpdateRequestDto.content());
+
         return board;
-    }//게시글 수정
+    }
 
+    private Board getBoardById(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾지 못했습니다"));
+    }
 }
+
+
+
+
+

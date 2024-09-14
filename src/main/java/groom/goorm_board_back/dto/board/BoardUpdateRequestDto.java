@@ -1,15 +1,10 @@
 package groom.goorm_board_back.dto.board;
 
+import jakarta.validation.constraints.NotBlank;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-public class BoardUpdateRequestDto {
-    //게시판 수정 전용의 RequestDto
-    private String title;
-    private String content;
-}
+public record BoardUpdateRequestDto(
+        @NotBlank(message = "제목을 입력하세요")
+        String title,
+        @NotBlank(message = "내용을 입력하세요")
+        String content
+) {}

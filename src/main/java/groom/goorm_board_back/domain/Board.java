@@ -33,6 +33,9 @@ public class Board extends BaseTimeEntity{
     @Column(columnDefinition = "integer default 0")
     private int views;
 
+    @Column(columnDefinition = "integer default 0")
+    private int likeCount;
+
     @Builder
     public Board(Member writer, String title, String content) {
         this.writer = writer;
@@ -50,5 +53,13 @@ public class Board extends BaseTimeEntity{
 
     public void incrementViews() {
         this.views++;
+    }
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        this.likeCount--;
     }
 }

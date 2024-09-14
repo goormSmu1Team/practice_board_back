@@ -6,14 +6,13 @@ import groom.goorm_board_back.dto.board.BoardSaveResponseDto;
 import groom.goorm_board_back.dto.board.BoardUpdateRequestDto;
 import groom.goorm_board_back.repository.BoardRepository;
 import groom.goorm_board_back.repository.CommentRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +31,7 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    @Transactional()
+    @Transactional(readOnly = true)
     public Board findBoardId(Long id) {
         Board board = getBoardById(id);
 
@@ -60,6 +59,7 @@ public class BoardService {
         return board;
     }
 
+    @Transactional(readOnly = true)
     public Page<BoardSaveResponseDto> paging(Pageable pageable) {
         int page = pageable.getPageNumber();
         int pageLimit = 10;

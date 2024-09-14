@@ -7,7 +7,7 @@ import groom.goorm_board_back.dto.comment.CommentSaveResponseDto;
 import groom.goorm_board_back.repository.BoardRepository;
 import groom.goorm_board_back.repository.CommentRepository;
 import groom.goorm_board_back.response.ResponseData;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -31,6 +31,7 @@ public class CommentService {
         return ResponseData.CommentResponseEntity(addComment);
     }
 
+    @Transactional(readOnly = true)
     public List<CommentSaveResponseDto> getCommentsByBoardDto(Long boardId) {
         List<Comment> comments = commentRepository.findByBoardId(boardId);
 
@@ -48,7 +49,6 @@ public class CommentService {
         Comment comment = getCommentByBoardAndCommentId(boardId, commentId);
         commentRepository.delete(comment);
     }
-
 
     public CommentSaveResponseDto updateComment(Long boardId, Long commentId, CommentSaveRequestDto commentSaveRequestDto) {
         Comment comment = getCommentByBoardAndCommentId(boardId, commentId);

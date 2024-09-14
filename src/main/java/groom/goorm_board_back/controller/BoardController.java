@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,13 @@ public class BoardController {
         BoardSaveResponseDto responseDto = new BoardSaveResponseDto(boardService.save(boardSaveRequestDto));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @Operation(summary = "게시판 조회(페이징)")
+    @GetMapping
+    public ResponseEntity<Page<BoardSaveResponseDto>> getAllBoards(Pageable pageable) {
+        Page<BoardSaveResponseDto> boardPage = boardService.paging(pageable);
+        return ResponseEntity.ok().body(boardPage);
     }
 
     @Operation(summary = "단일 게시판 조회")

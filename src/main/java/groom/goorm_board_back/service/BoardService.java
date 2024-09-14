@@ -2,11 +2,16 @@ package groom.goorm_board_back.service;
 
 import groom.goorm_board_back.domain.Board;
 import groom.goorm_board_back.dto.board.BoardSaveRequestDto;
+import groom.goorm_board_back.dto.board.BoardSaveResponseDto;
 import groom.goorm_board_back.dto.board.BoardUpdateRequestDto;
 import groom.goorm_board_back.repository.BoardRepository;
 import groom.goorm_board_back.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -53,6 +58,15 @@ public class BoardService {
         board.updateContent(boardUpdateRequestDto.content());
 
         return board;
+    }
+
+    public Page<BoardSaveResponseDto> paging(Pageable pageable) {
+        int page = pageable.getPageNumber();
+        int pageLimit = 10;
+        Page<Board> boardPages = boardRepository.
+                findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.ASC, "id")));
+
+        return boardPages.map(BoardSaveResponseDto::new);
     }
 
     private Board getBoardById(Long id) {

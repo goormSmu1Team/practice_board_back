@@ -17,7 +17,7 @@ public class CommentController {
     @PostMapping("/comment/{boardId}")
     public ResponseTemplate<?> save(@PathVariable("boardId") Long boardId, @RequestBody CommentSaveDto commentSaveDto) {
         commentService.save(boardId, commentSaveDto);
-        return new ResponseTemplate<>(HttpStatus.OK, "댓글 저장 성공", commentSaveDto);
+        return new ResponseTemplate<>(HttpStatus.CREATED, "댓글 저장 성공", commentSaveDto);
     }
 
     @PutMapping("/comment/{commentId}")
@@ -29,7 +29,7 @@ public class CommentController {
     @DeleteMapping("/comment/{commentId}")
     public ResponseTemplate<?> delete(@PathVariable("commentId") Long commentId) {
         commentService.delete(commentId);
-        return new ResponseTemplate<>(HttpStatus.OK, "댓글 삭제 성공", commentId);
+        return new ResponseTemplate<>(HttpStatus.NO_CONTENT, "댓글 삭제 성공", commentId);
     }
 
     @GetMapping("/comment/{boardId}")

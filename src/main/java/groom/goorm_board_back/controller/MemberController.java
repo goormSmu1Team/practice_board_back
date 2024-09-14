@@ -23,7 +23,7 @@ public class MemberController {
     @PostMapping("/member/signUp")
     public ResponseTemplate<?> signUp(@RequestBody MemberSignUpDto memberSignUpDto) {
         memberService.signUp(memberSignUpDto);
-        return new ResponseTemplate<>(HttpStatus.OK, "회원가입 성공");
+        return new ResponseTemplate<>(HttpStatus.CREATED, "회원가입 성공");
     }
 
     @PostMapping("/member/signIn")

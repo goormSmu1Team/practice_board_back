@@ -23,7 +23,7 @@ public class BoardController {
     @PostMapping("/board")
     public ResponseTemplate<?> save(@RequestBody @Valid BoardSaveDto boardSaveDto) {
         boardService.save(boardSaveDto);
-        return new ResponseTemplate<>(HttpStatus.OK, "게시글 저장 성공", boardSaveDto);
+        return new ResponseTemplate<>(HttpStatus.CREATED, "게시글 저장 성공", boardSaveDto);
     }
 
     @PutMapping("/board/{boardId}")
@@ -35,7 +35,7 @@ public class BoardController {
     @DeleteMapping("/board/{boardId}")
     public ResponseTemplate<?> delete(@PathVariable("boardId") Long boardId) {
         boardService.delete(boardId);
-        return new ResponseTemplate<>(HttpStatus.OK, "게시글 삭제 성공", boardId);
+        return new ResponseTemplate<>(HttpStatus.NO_CONTENT, "게시글 삭제 성공", boardId);
     }
 
     @GetMapping("/board/{boardId}")

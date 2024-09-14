@@ -4,6 +4,7 @@ import groom.goorm_board_back.domain.Board;
 import groom.goorm_board_back.dto.board.BoardInfoDto;
 import groom.goorm_board_back.dto.board.BoardSaveDto;
 import groom.goorm_board_back.dto.board.BoardUpdateDto;
+import groom.goorm_board_back.global.exception.board.BoardForbiddenException;
 import groom.goorm_board_back.repository.board.BoardJpaRepository;
 import groom.goorm_board_back.repository.board.BoardRepository;
 import groom.goorm_board_back.repository.member.MemberRepository;
@@ -53,9 +54,9 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    private void checkAuthority(Board board) {
+    private void checkAuthority(Board board) throws BoardForbiddenException {
         if(!board.getWriter().equals(memberRepository.findByMemberWithId())){
-            throw new IllegalArgumentException("수정/삭제 할 권한이 없습니다.");
+            throw new BoardForbiddenException();
         }
     }
 

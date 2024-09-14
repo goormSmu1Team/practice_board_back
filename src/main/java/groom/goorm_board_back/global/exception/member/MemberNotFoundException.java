@@ -9,12 +9,7 @@ public class MemberNotFoundException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public MemberNotFoundException() {
-        this(ErrorCode.MEMBER_NOT_FOUND);
-    }
-
-    public MemberNotFoundException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+        this.errorCode = ErrorCode.MEMBER_NOT_FOUND;
     }
 }
 

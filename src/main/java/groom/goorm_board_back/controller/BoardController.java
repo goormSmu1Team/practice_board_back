@@ -51,10 +51,4 @@ public class BoardController {
         return new ResponseTemplate<>(HttpStatus.OK, "게시글 전체 조회 성공");
     }
 
-//    @PostMapping("/board/{boardId}/like")
-//    public ResponseTemplate<?> like(@PathVariable("boardId") Long boardId) {
-//        boardService.addLike(boardId);
-//        return new ResponseTemplate<>(HttpStatus.OK, "좋아요 성공");
-//    }
-
 }

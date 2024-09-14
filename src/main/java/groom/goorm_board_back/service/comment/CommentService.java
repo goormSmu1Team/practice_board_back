@@ -4,6 +4,7 @@ import groom.goorm_board_back.domain.Comment;
 import groom.goorm_board_back.dto.comment.CommentInfoDto;
 import groom.goorm_board_back.dto.comment.CommentSaveDto;
 import groom.goorm_board_back.dto.comment.CommentUpdateDto;
+import groom.goorm_board_back.global.exception.comment.CommentForbiddenException;
 import groom.goorm_board_back.global.util.SecurityUtil;
 import groom.goorm_board_back.repository.board.BoardRepository;
 import groom.goorm_board_back.repository.comment.CommentJpaRepository;
@@ -50,9 +51,9 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private void checkAuthority(Comment comment) {
+    private void checkAuthority(Comment comment) throws CommentForbiddenException {
         if(!comment.getWriter().equals(memberRepository.findByMemberWithId())) {
-            throw new IllegalArgumentException("수정/삭제 할 권한이 없습니다.");
+            throw new CommentForbiddenException();
         }
     }
 
@@ -61,17 +62,4 @@ public class CommentService {
                 .map(CommentInfoDto::new)
                 .collect(Collectors.toList());
     }
-
-//    public CommentInfoDto getCommentInfo(Long id) {
-//        return new CommentInfoDto(commentRepository.findById(id).orElseThrow(IllegalArgumentException::new));
-//    }
-
-//    public List<CommentInfoDto> getComments(Long boardId) {
-//
-//        List<Comment> comment = commentRepository.findByBoardId(boardId);
-//
-//        return comment.stream().map(comment1 -> {
-//            return new CommentInfoDto(comment);
-//        }).collect(Collectors.toList());
-//    }
 }

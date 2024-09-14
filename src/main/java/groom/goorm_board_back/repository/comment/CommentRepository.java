@@ -1,6 +1,7 @@
 package groom.goorm_board_back.repository.comment;
 
 import groom.goorm_board_back.domain.Comment;
+import groom.goorm_board_back.global.exception.comment.CommentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,6 @@ public class CommentRepository {
     }
 
     public Comment findByCommentWithId(Long commentId) {
-        return commentJpaRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        return commentJpaRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
     }
 }

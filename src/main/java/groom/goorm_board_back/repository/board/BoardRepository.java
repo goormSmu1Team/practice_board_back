@@ -1,6 +1,9 @@
 package groom.goorm_board_back.repository.board;
 
 import groom.goorm_board_back.domain.Board;
+import groom.goorm_board_back.global.exception.ControllerAdvice;
+import groom.goorm_board_back.global.exception.board.BoardNotFoundException;
+import groom.goorm_board_back.global.exception.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public class BoardRepository {
 
     private final BoardJpaRepository boardJpaRepository;
+    private final ControllerAdvice controllerAdvice;
 
     public void save(Board board) {
         boardJpaRepository.save(board);
@@ -19,6 +23,6 @@ public class BoardRepository {
     }
 
     public Board findByBoardWithId(Long boardId) {
-        return boardJpaRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        return boardJpaRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
     }
 }

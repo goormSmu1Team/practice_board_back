@@ -1,6 +1,5 @@
 package groom.goorm_board_back.controller;
 
-import groom.goorm_board_back.dto.like.LikeUpdateDto;
 import groom.goorm_board_back.global.template.ResponseTemplate;
 import groom.goorm_board_back.service.like.LikeService;
 import lombok.RequiredArgsConstructor;
